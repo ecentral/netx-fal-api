@@ -3,10 +3,10 @@
 	"version": "1.0.0",
 	"authors": [
 		{
-			"name": "brix IT solutions",
+			"name": "eCentral GmbH",
 			"role": "Project Owner",
-			"email": "support@brix.ch",
-			"homepage": "https://www.brix.ch"
+			"email": "support@ecentral.de",
+			"homepage": "https://www.ecentral.de"
 		}
 	],
 	"type": "typo3-cms-extension",
@@ -41,17 +41,8 @@
 		"fairway/netx-fal-api": "*"
 	},
 	"require-dev": {
-		"codeception/codeception": "^4.1",
-		"codeception/module-asserts": "^1.2",
-		"codeception/module-cli": "^1.1",
-		"codeception/module-webdriver": "^1.1",
-		"phpstan/phpstan": "^1.2.0",
-		"typo3/cms-frontend": "^12 || ^13",
-		"typo3/cms-install": "^12 || ^13",
-		"typo3/cms-filelist": "^12 || ^13",
-		"typo3/coding-standards": "^0.3.0",
-		"typo3/tailor": "^1.2",
-		"typo3/testing-framework": "^6.14.0"
+		"phpunit/phpunit": "^8.0 || ^9.0",
+		"friendsofphp/php-cs-fixer": "^3.5"
 	},
 	"minimum-stability": "dev",
 	"prefer-stable": true,
