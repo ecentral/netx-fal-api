@@ -32,8 +32,12 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "^12 || ^13",
-		"guzzlehttp/psr7": "*",
+		"php": "^8.1",
+		"ext-curl": "*",
+		"ext-json": "*",
+		"ext-mbstring": "*",
+		"guzzlehttp/guzzle": "^7.3",
+		"guzzlehttp/psr7": "^1.7 || ^2.0",
 		"fairway/netx-fal-api": "*"
 	},
 	"require-dev": {

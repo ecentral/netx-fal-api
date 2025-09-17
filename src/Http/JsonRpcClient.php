@@ -2,6 +2,7 @@
 namespace Fairway\NetXFalApi\Http;
 
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\GuzzleException;
 
 class JsonRpcClient
 {
@@ -20,6 +21,9 @@ class JsonRpcClient
         ]);
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function call(string $method, array $params = [], ?string $id = null): array
     {
         $payload = [
@@ -32,12 +36,24 @@ class JsonRpcClient
         $response = $this->client->post('rpc', [
             'json' => $payload
         ]);
-
-        $body = json_decode((string) $response->getBody(), true);
+        if($response->getStatusCode() !== 200) {
+            throw new \RuntimeException(
+                sprintf('NetX API Error (748398342): Error statuscode %s', $response->getStatusCode())
+            );
+        }
+        if(json_validate($response->getBody()->getContents())) {
+            $body = json_decode($response->getBody()->getContents(), true);
+        }
+        else
+        {
+            throw new \RuntimeException(
+                'NetX API Error (748398472): Invalid json code'
+            );
+        }
 
         if (isset($body['error'])) {
             throw new \RuntimeException(
-                sprintf("NetX API Error (%s): %s", $body['error']['code'], $body['error']['message'])
+                sprintf('NetX API Error (%s): %s', $body['error']['code'], $body['error']['message'])
             );
         }
 
