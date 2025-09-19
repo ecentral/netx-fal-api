@@ -29,15 +29,68 @@ class Client
     public function __construct(string $baseUri, string $apiToken)
     {
         $this->jsonRpcClient = new JsonRpcClient($baseUri, $apiToken);
+    }
 
-        $this->assetService = new AssetService($this->jsonRpcClient);
-        $this->folderService = new FolderService($this->jsonRpcClient);
-        $this->collectionService = new CollectionService($this->jsonRpcClient);
-        $this->viewsService = new ViewService($this->jsonRpcClient);
-        $this->versionsService = new VersionService($this->jsonRpcClient);
-        $this->searchService = new SearchService($this->jsonRpcClient);
-        $this->miscService = new MiscService($this->jsonRpcClient);
-        $this->attributeService = new AttributeService($this->jsonRpcClient);
-        $this->fileImportService = new FileImportService($this->jsonRpcClient);
+    public function assetService(): AssetService {
+        if($this->assetService === null) {
+            $this->assetService = new AssetService($this->jsonRpcClient);
+        }
+        return $this->assetService;
+    }
+
+    public function collectionService(): CollectionService {
+        if($this->collectionService === null) {
+            $this->collectionService = new CollectionService($this->jsonRpcClient);
+        }
+        return $this->collectionService;
+    }
+
+    public function viewsService(): ViewService {
+        if($this->viewsService == null) {
+            $this->viewsService = new ViewService($this->jsonRpcClient);
+        }
+        return $this->viewsService;
+    }
+
+    public function versionsService(): VersionService {
+        if($this->versionsService == null) {
+            $this->versionsService = new VersionService($this->jsonRpcClient);
+        }
+        return $this->versionsService;
+    }
+
+    public function searchService(): SearchService {
+        if($this->searchService == null) {
+            $this->searchService = new SearchService($this->jsonRpcClient);
+        }
+        return $this->searchService;
+    }
+
+    public function miscService(): MiscService {
+        if($this->miscService == null) {
+            $this->miscService = new MiscService($this->jsonRpcClient);
+        }
+        return $this->miscService;
+    }
+
+    public function attributeService(): AttributeService {
+        if($this->attributeService == null) {
+            $this->attributeService = new AttributeService($this->jsonRpcClient);
+        }
+        return $this->attributeService;
+    }
+
+    public function fileImportService(): FileImportService {
+        if($this->fileImportService == null) {
+            $this->fileImportService = new FileImportService($this->jsonRpcClient);
+        }
+        return $this->fileImportService;
+    }
+
+    public function folderService(): FolderService {
+        if($this->folderService == null) {
+            $this->folderService = new FolderService($this->jsonRpcClient);
+        }
+        return $this->folderService;
     }
 }
