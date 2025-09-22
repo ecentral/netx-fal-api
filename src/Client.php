@@ -15,15 +15,15 @@ use Fairway\NetXFalApi\Services\ViewService;
 class Client
 {
     private JsonRpcClient $jsonRpcClient;
-    public AssetService $assetService;
-    public FolderService $folderService;
-    public CollectionService $collectionService;
-    public ViewService $viewsService;
-    public VersionService $versionsService;
-    public SearchService $searchService;
-    public MiscService $miscService;
-    public AttributeService $attributeService;
-    public FileImportService  $fileImportService;
+    public ?AssetService $assetService = null;
+    public ?FolderService $folderService = null;
+    public ?CollectionService $collectionService = null;
+    public ?ViewService $viewsService = null;
+    public ?VersionService $versionsService = null;
+    public ?SearchService $searchService = null;
+    public ?MiscService $miscService = null;
+    public ?AttributeService $attributeService = null;
+    public ?FileImportService  $fileImportService = null;
 
 
     public function __construct(string $baseUri, string $apiToken)
