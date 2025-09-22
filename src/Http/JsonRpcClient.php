@@ -16,7 +16,7 @@ class JsonRpcClient
             'base_uri' => rtrim($baseUri, '/') . '/api/',
             'headers'  => [
                 'Content-Type' => 'application/json',
-                'apiToken'     => $this->apiToken,
+                'Authorization'     => 'apiToken '. $this->apiToken,
             ]
         ]);
     }
@@ -27,22 +27,23 @@ class JsonRpcClient
     public function call(string $method, array $params = [], ?string $id = null): array
     {
         $payload = [
-            'jsonrpc' => '2.0',
-            'method'  => $method,
-            'params'  => $params,
-            'id'      => $id ?? uniqid()
+            'json'=>[
+                'jsonrpc' => '2.0',
+                'method'  => $method,
+                'params'  => $params,
+                'id'      => $id ?? uniqid(),
+            ]
         ];
 
-        $response = $this->client->post('rpc', [
-            'json' => $payload
-        ]);
+        $response = $this->client->post('rpc', $payload);
+
         if($response->getStatusCode() !== 200) {
             throw new \RuntimeException(
                 sprintf('NetX API Error (748398342): Error statuscode %s', $response->getStatusCode())
             );
         }
-        if(json_validate($response->getBody()->getContents())) {
-            $body = json_decode($response->getBody()->getContents(), true);
+        if(json_validate($response->getBody())) {
+            $body = json_decode($response->getBody(), true);
         }
         else
         {
