@@ -1,24 +1,109 @@
 <?php
 namespace Fairway\NetXFalApi\Models;
 
+use Fairway\NetXFalApi\Models\Asset\File;
+use Fairway\NetXFalApi\Models\Asset\MetaData;
+use Fairway\NetXFalApi\Models\Asset\Proxie;
+use Fairway\NetXFalApi\Models\Asset\ProxieType;
+
 class Asset
 {
-    public int $id;
-    public ?string $name = null;
-    public ?string $fileName = null;
-    public ?array $folders = null;
-    public ?array $attributes = null;
-    public ?array $file = null;
-    public ?array $base = null;
+    private int $id;
+    private ?string $name = null;
+    private ?string $fileName = null;
+    //private ?array $folders = null;
+    private ?array $attributes = null;
+    private ?File $file = null;
+    private ?array $proxies = null;
+    private int $creationDate = 0;
+    private int $modificationDate = 0;
+
+    private MetaData $metaData;
+    private int $importDate = 0;
 
     public function __construct(array $data)
     {
         $this->id        = (int) ($data['id'] ?? 0);
         $this->name      = $data['name'] ?? null;
         $this->fileName  = $data['fileName'] ?? null;
-        $this->folders   = $data['folders'] ?? null;
+        //$this->folders   = $data['folders'] ?? null;
         $this->attributes = $data['attributes'] ?? null;
-        $this->file      = $data['file'] ?? null;
-        $this->base      = $data['base'] ?? null;
+        $this->file      = new File($data['file'] ?? null);
+        $this->proxies = array_map(fn(array $row) => new Proxie($row), $data['proxies'] ?? null);
+        $this->creationDate = (int) ($data['creationDate'] ?? 0);
+        $this->modificationDate = (int) ($data['modDate'] ?? 0);
+        $this->importDate = (int) ($data['importDate'] ?? 0);
+        $this->metaData = new MetaData($data['metadata'] ?? null);
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function getFileName(): ?string
+    {
+        return $this->fileName;
+    }
+
+    public function getFolders(): ?array
+    {
+        return $this->folders;
+    }
+
+    public function getAttributes(): ?array
+    {
+        return $this->attributes;
+    }
+
+    public function getCreationDate(): int
+    {
+        return $this->creationDate;
+    }
+
+    public function getModificationDate(): int
+    {
+        return $this->modificationDate;
+    }
+
+    public function getImportDate(): int
+    {
+        return $this->importDate;
+    }
+
+    public function getThumbnailUrl(): ?string
+    {
+        foreach ($this->proxies as $proxie) {
+            if($proxie->getProxieType() == ProxieType::THUMBNAIL)
+            {
+                return $this->file->getUrl().'/'.$proxie->getFile()->getName();
+            }
+        }
+        return null;
+    }
+    public function getPreviewUrl(): ?string
+    {
+        foreach ($this->proxies as $proxie) {
+            if($proxie->getProxieType() == ProxieType::PREVIEW)
+            {
+                return $this->file->getUrl().'/'.$proxie->getFile()->getName();
+            }
+        }
+        return null;
+    }
+
+    public function getOriginalUrl(): ?string
+    {
+        return $this->file->getUrl();
+    }
+
+    public function getSize(): ?int
+    {
+        return $this->file->getSize();
     }
 }
