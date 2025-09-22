@@ -21,7 +21,7 @@ class AssetService
      * @param string[] $fields
      * @return Asset[]
      */
-    public function getAssets(array $ids, array $fields = ['asset.base']): array
+    public function getAssets(array $ids, array $fields = ["asset.id", "asset.base","asset.file","asset.proxies","asset.attributes","asset.metadata"]): array
     {
         $result = $this->rpc->call('getAssets', [$ids, ['data' => $fields]]);
         return array_map(fn(array $row) => new Asset($row), $result);
@@ -35,7 +35,7 @@ class AssetService
      * @param string[] $data
      * @return Asset
      */
-    public function updateAsset(int $id, array $fields, array $data = ['asset.base']): Asset
+    public function updateAsset(int $id, array $fields, array $data = ["asset.base"]): Asset
     {
         $result = $this->rpc->call('updateAsset', [
             array_merge(['id' => $id], $fields),
@@ -59,7 +59,7 @@ class AssetService
         bool  $recursive = false,
         int   $startIndex = 0,
         int   $size = 10,
-        array $fields = ['asset.id', 'asset.base']
+        array $fields = ["asset.id", "asset.base","asset.file","asset.proxies","asset.attributes","asset.metadata"]
     ): array
     {
         $result = $this->rpc->call('getAssetsByFolder', [
