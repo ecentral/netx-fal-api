@@ -76,34 +76,48 @@ class Asset
         return $this->importDate;
     }
 
-    public function getThumbnailUrl(): ?string
+    public function getThumbnailUrl(string $host): ?string
     {
         foreach ($this->proxies as $proxie) {
             if($proxie->getProxieType() == ProxieType::THUMBNAIL)
             {
-                return $this->file->getUrl().'/'.$proxie->getFile()->getName();
+                return $host . $proxie->getFile()->getUrl();
             }
         }
         return null;
     }
-    public function getPreviewUrl(): ?string
+    public function getPreviewUrl(string $host): ?string
     {
         foreach ($this->proxies as $proxie) {
             if($proxie->getProxieType() == ProxieType::PREVIEW)
             {
-                return $this->file->getUrl().'/'.$proxie->getFile()->getName();
+                return $host . $proxie->getFile()->getUrl();
             }
         }
         return null;
     }
 
-    public function getOriginalUrl(): ?string
+    public function getOriginalUrl(string $host): ?string
     {
-        return $this->file->getUrl();
+        return $host . $this->file->getUrl();
     }
 
     public function getSize(): ?int
     {
         return $this->file->getSize();
+    }
+
+    public function getWidth(): ?int
+    {
+        return $this->file->getWidth();
+    }
+    public function getHeight(): ?int
+    {
+        return $this->file->getHeight();
+    }
+
+    public function getExtension(): string
+    {
+        return pathinfo($this->fileName, PATHINFO_EXTENSION);
     }
 }
