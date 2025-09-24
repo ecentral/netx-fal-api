@@ -81,7 +81,7 @@ class FolderService
         int $parentId,
         int $startIndex = 0,
         int $size = 10,
-        array $fields = ['folder.id','folder.base']
+        array $fields = ['folder.id','folder.base','folder.children']
     ): array {
         $result = $this->rpc->call('getFoldersByParent', [
             $parentId,
