@@ -13,8 +13,8 @@ enum ProxieType
     {
         return match($stringProxyType)
         {
-            'THUMB' => self::THUMBNAIL,
-            'PREVIEW' => self::PREVIEW,
+            'Thumbnail' => self::THUMBNAIL,
+            'Preview' => self::PREVIEW,
             default => self::UNDEFINED,
         };
     }
