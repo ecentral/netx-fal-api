@@ -70,7 +70,7 @@ class AssetService
                 'data' => $fields
             ]
         ]);
-        return array_map(fn(array $row) => new Asset($row), $result);
+        return array_map(fn(array $row) => new Asset($row), $result['results'] ?? []);
     }
 
     /**
