@@ -19,6 +19,10 @@ class File
         $this->height = $data['height'] ?? 0;
     }
 
+    public function getUrlPath(): ?string
+    {
+        return $this->url;
+    }
     //Url without host
     public function getUrl(): ?string
     {
