@@ -81,7 +81,8 @@ class Asset
         foreach ($this->proxies as $proxie) {
             if($proxie->getProxieType() == ProxieType::THUMBNAIL)
             {
-                return $host . $proxie->getFile()->getUrl();
+                $urlPath = $host . $this->file->getUrlPath();
+                return $urlPath .'/'.$proxie->getFile()->getName();
             }
         }
         return null;
@@ -91,7 +92,8 @@ class Asset
         foreach ($this->proxies as $proxie) {
             if($proxie->getProxieType() == ProxieType::PREVIEW)
             {
-                return $host . $proxie->getFile()->getUrl();
+                $urlPath = $host . $this->file->getUrlPath();
+                return $urlPath .'/'.$proxie->getFile()->getName();
             }
         }
         return null;
