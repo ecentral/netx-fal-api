@@ -15,7 +15,7 @@ class FolderService
 
     /**
      * Create a new folder.
-     * Mirrors Postman: createFolder(paramsObject, null)
+     * Mirrors NetX JSON-RPC: createFolder(paramsObject, { data: [...] })
      *
      * @param string      $name
      * @param int|null    $parentId
