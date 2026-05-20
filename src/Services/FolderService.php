@@ -24,17 +24,19 @@ class FolderService
      */
     public function createFolder(string $name, ?int $parentId = null, ?string $description = null): Folder
     {
-        $payload = ['name' => $name];
+        $payload = [
+            'name' => $name,
+            'description' => $description ?? '',
+        ];
         if ($parentId !== null)    $payload['parentId'] = $parentId;
-        if ($description !== null) $payload['description'] = $description;
 
-        $result = $this->rpc->call('createFolder', [$payload, null]);
+        $result = $this->rpc->call('createFolder', [$payload, $this->folderDataOptions()]);
         return new Folder($result);
     }
 
     /**
      * Update an existing folder.
-     * Mirrors Postman: updateFolder(paramsObject, null)
+     * Mirrors NetX JSON-RPC: updateFolder(paramsObject, { data: [...] })
      *
      * @param int         $id
      * @param int|null    $parentId
@@ -49,7 +51,7 @@ class FolderService
         if ($name !== null)        $payload['name'] = $name;
         if ($description !== null) $payload['description'] = $description;
 
-        $result = $this->rpc->call('updateFolder', [$payload, null]);
+        $result = $this->rpc->call('updateFolder', [$payload, $this->folderDataOptions()]);
         return new Folder($result);
     }
 
@@ -91,7 +93,7 @@ class FolderService
             ]
         ]);
 
-        return array_map(fn(array $row) => new Folder($row), $this->extractRows($result));
+        return array_map(fn(array $row) => new Folder($row), $result['results'] ?? []);
     }
 
     /**
@@ -118,7 +120,7 @@ class FolderService
             ]
         ]);
 
-        return array_map(fn(array $row) => new Folder($row), $this->extractRows($result));
+        return array_map(fn(array $row) => new Folder($row), $result);
     }
 
     /**
@@ -169,20 +171,12 @@ class FolderService
     }
 
     /**
-     * @return list<array<string, mixed>>
+     * @return array{data: string[]}
      */
-    private function extractRows(array $result): array
+    private function folderDataOptions(): array
     {
-        if (array_is_list($result)) {
-            return $result;
-        }
-
-        foreach (['results', 'items', 'folders'] as $key) {
-            if (isset($result[$key]) && is_array($result[$key])) {
-                return $result[$key];
-            }
-        }
-
-        return [];
+        return [
+            'data' => ['folder.id','folder.base','folder.children'],
+        ];
     }
 }
