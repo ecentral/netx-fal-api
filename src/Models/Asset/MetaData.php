@@ -7,7 +7,7 @@ class MetaData
     private array $metaData = [];
     public function __construct(array $metaData = [])
     {
-        $this->metaData = $metaData;
+        $this->metaData = $metaData ?? [];
     }
 
     public function getMetaData($metaDataKey)
