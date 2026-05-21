@@ -22,7 +22,30 @@ class AttributeService
     public function getAttributes(array $fields = ['attribute.base']): array
     {
         $result = $this->rpc->call('getAttributes', [['data' => $fields]]);
-        return array_map(fn(array $row) => new Attribute($row), $result);
+        return array_map(fn(array $row) => new Attribute($row), $this->attributeRows($result));
+    }
+
+    /**
+     * @param array<mixed> $result
+     * @return array<int, array<mixed>>
+     */
+    private function attributeRows(array $result): array
+    {
+        foreach (['results', 'items', 'data'] as $key) {
+            if (isset($result[$key]) && is_array($result[$key])) {
+                $result = $result[$key];
+                break;
+            }
+        }
+
+        if (array_key_exists('id', $result) || array_key_exists('name', $result)) {
+            return [$result];
+        }
+
+        return array_values(array_filter(
+            $result,
+            static fn (mixed $row): bool => is_array($row) && (array_key_exists('id', $row) || array_key_exists('name', $row)),
+        ));
     }
 
     /**
@@ -36,6 +59,43 @@ class AttributeService
     {
         $result = $this->rpc->call('getAttributeById', [$id, ['data' => $fields]]);
         return new Attribute($result);
+    }
+
+    /**
+     * Get configured values for a specific attribute.
+     *
+     * @param int $attributeId
+     * @param string[] $fields
+     * @return array<int, array<mixed>>
+     */
+    public function getValuesByAttribute(int $attributeId, array $fields = ['attributeValue.base']): array
+    {
+        $result = $this->rpc->call('getValuesByAttribute', [$attributeId, ['data' => $fields]]);
+
+        return $this->valueRows($result);
+    }
+
+    /**
+     * @param array<mixed> $result
+     * @return array<int, array<mixed>>
+     */
+    private function valueRows(array $result): array
+    {
+        foreach (['results', 'items', 'data', 'values'] as $key) {
+            if (isset($result[$key]) && is_array($result[$key])) {
+                $result = $result[$key];
+                break;
+            }
+        }
+
+        if (array_key_exists('id', $result) || array_key_exists('name', $result) || array_key_exists('value', $result)) {
+            return [$result];
+        }
+
+        return array_values(array_filter(
+            $result,
+            static fn (mixed $row): bool => is_array($row) && (array_key_exists('id', $row) || array_key_exists('name', $row) || array_key_exists('value', $row)),
+        ));
     }
 
     /**
