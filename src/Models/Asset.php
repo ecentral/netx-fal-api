@@ -11,7 +11,7 @@ class Asset
     private int $id;
     private ?string $name = null;
     private ?string $fileName = null;
-    //private ?array $folders = null;
+    private ?array $containers = null;
     private ?array $attributes = null;
     private ?File $file = null;
     private ?array $proxies = null;
@@ -26,14 +26,14 @@ class Asset
         $this->id        = (int) ($data['id'] ?? 0);
         $this->name      = $data['name'] ?? null;
         $this->fileName  = $data['fileName'] ?? null;
-        //$this->folders   = $data['folders'] ?? null;
+        $this->containers = $data['containers'] ?? $data['folders'] ?? null;
         $this->attributes = $data['attributes'] ?? null;
-        $this->file      = new File($data['file'] ?? null);
-        $this->proxies = array_map(fn(array $row) => new Proxie($row), $data['proxies'] ?? null);
+        $this->file      = new File($data['file'] ?? []);
+        $this->proxies = array_map(fn(array $row) => new Proxie($row), $data['proxies'] ?? []);
         $this->creationDate = (int) ($data['creationDate'] ?? 0);
         $this->modificationDate = (int) ($data['modDate'] ?? 0);
         $this->importDate = (int) ($data['importDate'] ?? 0);
-        $this->metaData = new MetaData($data['metadata'] ?? null);
+        $this->metaData = new MetaData($data['metadata'] ?? []);
     }
 
     public function getId(): int
@@ -53,7 +53,17 @@ class Asset
 
     public function getFolders(): ?array
     {
-        return $this->folders;
+        return $this->containers;
+    }
+
+    public function getContainers(): ?array
+    {
+        return $this->containers;
+    }
+
+    public function getMetaData(): MetaData
+    {
+        return $this->metaData;
     }
 
     public function getAttributes(): ?array

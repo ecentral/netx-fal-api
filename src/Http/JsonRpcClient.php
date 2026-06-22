@@ -9,11 +9,11 @@ class JsonRpcClient
     private GuzzleClient $client;
     private string $apiToken;
 
-    public function __construct(string $baseUri, string $apiToken)
+    public function __construct(string $baseUri, string $apiToken, string $apiPath = 'api')
     {
         $this->apiToken = $apiToken;
         $this->client = new GuzzleClient([
-            'base_uri' => rtrim($baseUri, '/') . '/api/',
+            'base_uri' => rtrim($baseUri, '/') . '/' . trim($apiPath, '/') . '/',
             'headers'  => [
                 'Content-Type' => 'application/json',
                 'Authorization'     => 'apiToken '. $this->apiToken,

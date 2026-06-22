@@ -10,7 +10,7 @@ class File
     private int $width = 0;
     private int $height = 0;
 
-    public function __construct(array $data)
+    public function __construct(array $data = [])
     {
         $this->name = $data['name'] ?? null;
         $this->size = $data['size'] ?? 0;

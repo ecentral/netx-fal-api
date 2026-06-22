@@ -26,9 +26,9 @@ class Client
     public ?FileImportService  $fileImportService = null;
 
 
-    public function __construct(string $baseUri, string $apiToken)
+    public function __construct(string $baseUri, string $apiToken, string $apiPath = 'api')
     {
-        $this->jsonRpcClient = new JsonRpcClient($baseUri, $apiToken);
+        $this->jsonRpcClient = new JsonRpcClient($baseUri, $apiToken, $apiPath);
     }
 
     public function assetService(): AssetService {

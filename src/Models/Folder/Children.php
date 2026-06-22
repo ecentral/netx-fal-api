@@ -9,7 +9,7 @@ class Children
 
     private int $folderCount = 0;
 
-    public function __construct(array $data)
+    public function __construct(array $data = [])
     {
         $this->assetCount = $data['assetCount'] ?? 0;
         $this->folderCount = $data['folderCount'] ?? 0;

@@ -91,7 +91,7 @@ class FolderService
             ]
         ]);
 
-        return array_map(fn(array $row) => new Folder($row), $result['results'] ?? []);
+        return array_map(fn(array $row) => new Folder($row), $this->extractRows($result));
     }
 
     /**
@@ -118,7 +118,7 @@ class FolderService
             ]
         ]);
 
-        return array_map(fn(array $row) => new Folder($row), $result);
+        return array_map(fn(array $row) => new Folder($row), $this->extractRows($result));
     }
 
     /**
@@ -166,5 +166,23 @@ class FolderService
     {
         $this->rpc->call('deleteFolder', [$id, null]);
         return true;
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    private function extractRows(array $result): array
+    {
+        if (array_is_list($result)) {
+            return $result;
+        }
+
+        foreach (['results', 'items', 'folders'] as $key) {
+            if (isset($result[$key]) && is_array($result[$key])) {
+                return $result[$key];
+            }
+        }
+
+        return [];
     }
 }

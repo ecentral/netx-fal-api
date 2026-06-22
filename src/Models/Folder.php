@@ -16,7 +16,7 @@ class Folder
         $this->id       = (int) ($data['id'] ?? 0);
         $this->name     = $data['name'] ?? null;
         $this->parentId = isset($data['parentId']) ? (int) $data['parentId'] : null;
-        $this->children = new Children($data['children'] ?? null);
+        $this->children = new Children($data['children'] ?? []);
         $this->assets   = $data['assets'] ?? null;
     }
 

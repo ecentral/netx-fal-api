@@ -7,10 +7,10 @@ class Proxie
     private ?string $name = null;
     private ?File $file = null;
 
-    public function __construct(array $data)
+    public function __construct(array $data = [])
     {
         $this->name = $data['name'] ?? null;
-        $this->file = new File($data['file'] ?? null);
+        $this->file = new File($data['file'] ?? []);
     }
 
     public function getName(): ?string

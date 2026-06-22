@@ -23,10 +23,11 @@ class CollectionService
      */
     public function createCollection(string $name, ?string $description = null, array $fields = ['collection.base']): Collection
     {
-        $params = [['name' => $name]];
+        $params = [['title' => $name]];
         if ($description !== null) {
             $params[0]['description'] = $description;
         }
+        $params[] = [];
         $params[] = ['data' => $fields];
 
         $result = $this->rpc->call('createCollection', $params);

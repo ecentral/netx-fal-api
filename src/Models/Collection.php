@@ -12,7 +12,7 @@ class Collection
     public function __construct(array $data)
     {
         $this->id          = (int) ($data['id'] ?? 0);
-        $this->name        = $data['name'] ?? null;
+        $this->name        = $data['name'] ?? $data['title'] ?? null;
         $this->description = $data['description'] ?? null;
         $this->assets      = $data['assets'] ?? null;
         $this->folders     = $data['folders'] ?? null;

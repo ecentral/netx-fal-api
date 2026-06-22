@@ -5,7 +5,7 @@ namespace Fairway\NetXFalApi\Models\Asset;
 class MetaData
 {
     private array $metaData = [];
-    public function __construct(array $metaData)
+    public function __construct(array $metaData = [])
     {
         $this->metaData = $metaData;
     }
