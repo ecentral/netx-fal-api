@@ -21,19 +21,15 @@ class FileImportService
      * @param string[] $fields
      * @return Asset
      */
-    public function importAsset(string $filePath, ?int $folderId = null, array $fields = ['asset.base']): Asset
+    public function importAsset(string $filePath, ?int $folderId = null, array $fields = ['asset.base'], ?string $fileName = null): Asset
     {
         if (!file_exists($filePath)) {
             throw new \InvalidArgumentException("File not found: $filePath");
         }
 
-        $result = $this->rpc->call('importAsset', [
-            [
-                'file' => base64_encode(file_get_contents($filePath)),
-                'fileName' => basename($filePath),
-                'folderId' => $folderId
-            ],
-            ['data' => $fields]
+        $result = $this->rpc->upload('POST', 'import/asset', $filePath, $fileName, [
+            'fileName' => $fileName ?? basename($filePath),
+            'folderId' => $folderId,
         ]);
 
         return new Asset($result);
@@ -53,13 +49,8 @@ class FileImportService
             throw new \InvalidArgumentException("File not found: $filePath");
         }
 
-        $result = $this->rpc->call('versionAsset', [
-            $assetId,
-            [
-                'file' => base64_encode(file_get_contents($filePath)),
-                'fileName' => basename($filePath)
-            ],
-            ['data' => $fields]
+        $result = $this->rpc->upload('PUT', sprintf('import/asset/%d', $assetId), $filePath, null, [
+            'fileName' => basename($filePath),
         ]);
 
         return new Asset($result);
