@@ -56,7 +56,7 @@ class CollectionService
     public function getCollections(array $fields = ['collection.base']): array
     {
         $result = $this->rpc->call('getCollections', [['data' => $fields]]);
-        return array_map(fn(array $row) => new Collection($row), $result);
+        return array_map(fn(array $row) => new Collection($row), $result["results"] ?? $result);
     }
 
     /**

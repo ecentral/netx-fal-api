@@ -120,7 +120,7 @@ class FolderService
             ]
         ]);
 
-        return array_map(fn(array $row) => new Folder($row), $result);
+        return array_map(fn(array $row) => new Folder($row), $result["results"] ?? $result);
     }
 
     /**
