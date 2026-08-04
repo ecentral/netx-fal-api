@@ -1,4 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the "netx_fal_api" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Fairway\NetXFalApi\Models;
 
 use Fairway\NetXFalApi\Models\Asset\File;
@@ -23,16 +33,16 @@ class Asset
 
     public function __construct(array $data)
     {
-        $this->id        = (int) ($data['id'] ?? 0);
+        $this->id        = (int)($data['id'] ?? 0);
         $this->name      = $data['name'] ?? null;
         $this->fileName  = $data['fileName'] ?? null;
         $this->containers = $data['containers'] ?? $data['folders'] ?? null;
         $this->attributes = $data['attributes'] ?? null;
         $this->file      = new File($data['file'] ?? []);
-        $this->proxies = array_map(fn(array $row) => new Proxie($row), $data['proxies'] ?? []);
-        $this->creationDate = (int) ($data['creationDate'] ?? 0);
-        $this->modificationDate = (int) ($data['modDate'] ?? 0);
-        $this->importDate = (int) ($data['importDate'] ?? 0);
+        $this->proxies = array_map(fn (array $row) => new Proxie($row), $data['proxies'] ?? []);
+        $this->creationDate = (int)($data['creationDate'] ?? 0);
+        $this->modificationDate = (int)($data['modDate'] ?? 0);
+        $this->importDate = (int)($data['importDate'] ?? 0);
         $this->metaData = new MetaData($data['metadata'] ?? []);
     }
 
@@ -89,10 +99,9 @@ class Asset
     public function getThumbnailUrl(string $host): ?string
     {
         foreach ($this->proxies as $proxie) {
-            if($proxie->getProxieType() == ProxieType::THUMBNAIL && $this->file !== null)
-            {
+            if ($proxie->getProxieType() == ProxieType::THUMBNAIL && $this->file !== null) {
                 $urlPath = $host . $this->file->getUrlPath();
-                return $urlPath .'/'.$proxie->getFile()->getName();
+                return $urlPath . '/' . $proxie->getFile()->getName();
             }
         }
         return null;
@@ -100,10 +109,9 @@ class Asset
     public function getPreviewUrl(string $host): ?string
     {
         foreach ($this->proxies as $proxie) {
-            if($proxie->getProxieType() == ProxieType::PREVIEW && $this->file !== null)
-            {
+            if ($proxie->getProxieType() == ProxieType::PREVIEW && $this->file !== null) {
                 $urlPath = $host . $this->file->getUrlPath();
-                return $urlPath .'/'.$proxie->getFile()->getName();
+                return $urlPath . '/' . $proxie->getFile()->getName();
             }
         }
         return null;

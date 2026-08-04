@@ -1,4 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the "netx_fal_api" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Fairway\NetXFalApi\Http;
 
 use GuzzleHttp\Client as GuzzleClient;
@@ -18,7 +28,7 @@ class JsonRpcClient
             'base_uri' => rtrim($baseUri, '/') . '/' . trim($apiPath, '/') . '/',
             'headers'  => [
                 'Content-Type' => 'application/json',
-                'Authorization'     => 'apiToken '. $this->apiToken,
+                'Authorization'     => 'apiToken ' . $this->apiToken,
             ]
         ]);
     }
@@ -29,7 +39,7 @@ class JsonRpcClient
     public function call(string $method, array $params = [], ?string $id = null): array
     {
         $payload = [
-            'json'=>[
+            'json' => [
                 'jsonrpc' => '2.0',
                 'method'  => $method,
                 'params'  => $params,
@@ -39,16 +49,14 @@ class JsonRpcClient
 
         $response = $this->client->post('rpc', $payload);
 
-        if($response->getStatusCode() !== 200) {
+        if ($response->getStatusCode() !== 200) {
             throw new \RuntimeException(
                 sprintf('NetX API Error (748398342): Error statuscode %s', $response->getStatusCode())
             );
         }
-        if(json_validate($response->getBody())) {
+        if (json_validate($response->getBody())) {
             $body = json_decode($response->getBody(), true);
-        }
-        else
-        {
+        } else {
             throw new \RuntimeException(
                 'NetX API Error (748398472): Invalid json code'
             );
@@ -93,7 +101,7 @@ class JsonRpcClient
 
             $multipart[] = [
                 'name' => $name,
-                'contents' => (string) $value,
+                'contents' => (string)$value,
             ];
         }
 
@@ -114,23 +122,21 @@ class JsonRpcClient
             }
         }
 
-        if($response->getStatusCode() < 200 || $response->getStatusCode() >= 300) {
+        if ($response->getStatusCode() < 200 || $response->getStatusCode() >= 300) {
             throw new \RuntimeException(
                 sprintf('NetX API Error (748398343): Error statuscode %s', $response->getStatusCode())
             );
         }
 
-        $contents = (string) $response->getBody();
+        $contents = (string)$response->getBody();
 
         if ($contents === '') {
             return [];
         }
 
-        if(json_validate($contents)) {
+        if (json_validate($contents)) {
             $body = json_decode($contents, true);
-        }
-        else
-        {
+        } else {
             throw new \RuntimeException(
                 'NetX API Error (748398473): Invalid json code'
             );

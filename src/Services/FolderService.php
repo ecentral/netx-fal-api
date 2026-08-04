@@ -1,4 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the "netx_fal_api" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Fairway\NetXFalApi\Services;
 
 use Fairway\NetXFalApi\Http\JsonRpcClient;
@@ -28,7 +38,9 @@ class FolderService
             'name' => $name,
             'description' => $description ?? '',
         ];
-        if ($parentId !== null)    $payload['parentId'] = $parentId;
+        if ($parentId !== null) {
+            $payload['parentId'] = $parentId;
+        }
 
         $result = $this->rpc->call('createFolder', [$payload, $this->folderDataOptions()]);
         return new Folder($result);
@@ -47,9 +59,15 @@ class FolderService
     public function updateFolder(int $id, ?int $parentId = null, ?string $name = null, ?string $description = null): Folder
     {
         $payload = ['id' => $id];
-        if ($parentId !== null)    $payload['parentId'] = $parentId;
-        if ($name !== null)        $payload['name'] = $name;
-        if ($description !== null) $payload['description'] = $description;
+        if ($parentId !== null) {
+            $payload['parentId'] = $parentId;
+        }
+        if ($name !== null) {
+            $payload['name'] = $name;
+        }
+        if ($description !== null) {
+            $payload['description'] = $description;
+        }
 
         $result = $this->rpc->call('updateFolder', [$payload, $this->folderDataOptions()]);
         return new Folder($result);
@@ -63,7 +81,7 @@ class FolderService
      * @param string[]   $fields e.g. ["folder.id","folder.base","folder.children"]
      * @return Folder
      */
-    public function getFolderById(int $id, array $fields = ['folder.id','folder.base','folder.children']): Folder
+    public function getFolderById(int $id, array $fields = ['folder.id', 'folder.base', 'folder.children']): Folder
     {
         $result = $this->rpc->call('getFolderById', [$id, ['data' => $fields]]);
         return new Folder($result);
@@ -83,7 +101,7 @@ class FolderService
         int $parentId,
         int $startIndex = 0,
         int $size = 10,
-        array $fields = ['folder.id','folder.base','folder.children']
+        array $fields = ['folder.id', 'folder.base', 'folder.children']
     ): array {
         $result = $this->rpc->call('getFoldersByParent', [
             $parentId,
@@ -93,7 +111,7 @@ class FolderService
             ]
         ]);
 
-        return array_map(fn(array $row) => new Folder($row), $result['results'] ?? []);
+        return array_map(fn (array $row) => new Folder($row), $result['results'] ?? []);
     }
 
     /**
@@ -110,7 +128,7 @@ class FolderService
         string $filter,
         int $startIndex = 0,
         int $size = 10,
-        array $fields = ['folder.id','folder.base']
+        array $fields = ['folder.id', 'folder.base']
     ): array {
         $result = $this->rpc->call('getFoldersByNameFilter', [
             $filter,
@@ -120,7 +138,7 @@ class FolderService
             ]
         ]);
 
-        return array_map(fn(array $row) => new Folder($row), $result["results"] ?? $result);
+        return array_map(fn (array $row) => new Folder($row), $result['results'] ?? $result);
     }
 
     /**
@@ -131,7 +149,7 @@ class FolderService
      * @param string[] $fields
      * @return Folder
      */
-    public function getFolderByPath(string $path, array $fields = ['folder.id','folder.base','folder.children']): Folder
+    public function getFolderByPath(string $path, array $fields = ['folder.id', 'folder.base', 'folder.children']): Folder
     {
         $result = $this->rpc->call('getFolderByPath', [
             $path,
@@ -148,7 +166,7 @@ class FolderService
      * @param string[] $fields
      * @return Folder
      */
-    public function createFolderFromPath(string $path, array $fields = ['folder.id','folder.base','folder.children']): Folder
+    public function createFolderFromPath(string $path, array $fields = ['folder.id', 'folder.base', 'folder.children']): Folder
     {
         $result = $this->rpc->call('createFolderFromPath', [
             $path,
@@ -176,7 +194,7 @@ class FolderService
     private function folderDataOptions(): array
     {
         return [
-            'data' => ['folder.id','folder.base','folder.children'],
+            'data' => ['folder.id', 'folder.base', 'folder.children'],
         ];
     }
 }
