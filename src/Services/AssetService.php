@@ -1,5 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the "netx_fal_api" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Fairway\NetXFalApi\Services;
 
 use Fairway\NetXFalApi\Http\JsonRpcClient;
@@ -21,10 +30,10 @@ class AssetService
      * @param string[] $fields
      * @return Asset[]
      */
-    public function getAssets(array $ids, array $fields = ["asset.id", "asset.base","asset.file","asset.proxies","asset.attributes","asset.metadata"]): array
+    public function getAssets(array $ids, array $fields = ['asset.id', 'asset.base', 'asset.file', 'asset.proxies', 'asset.attributes', 'asset.metadata']): array
     {
         $result = $this->rpc->call('getAssets', [$ids, ['data' => $fields]]);
-        return array_map(fn(array $row) => new Asset($row), $result);
+        return array_map(fn (array $row) => new Asset($row), $result);
     }
 
     /**
@@ -35,7 +44,7 @@ class AssetService
      * @param string[] $data
      * @return Asset
      */
-    public function updateAsset(int $id, array $fields, array $data = ["asset.base"]): Asset
+    public function updateAsset(int $id, array $fields, array $data = ['asset.base']): Asset
     {
         $result = $this->rpc->call('updateAsset', [
             array_merge(['id' => $id], $fields),
@@ -59,9 +68,8 @@ class AssetService
         bool  $recursive = false,
         int   $startIndex = 0,
         int   $size = 10,
-        array $fields = ["asset.id", "asset.base","asset.file","asset.proxies","asset.attributes","asset.metadata"]
-    ): array
-    {
+        array $fields = ['asset.id', 'asset.base', 'asset.file', 'asset.proxies', 'asset.attributes', 'asset.metadata']
+    ): array {
         $result = $this->rpc->call('getAssetsByFolder', [
             $folderId,
             $recursive,
@@ -70,7 +78,7 @@ class AssetService
                 'data' => $fields
             ]
         ]);
-        return array_map(fn(array $row) => new Asset($row), $result['results'] ?? []);
+        return array_map(fn (array $row) => new Asset($row), $result['results'] ?? []);
     }
 
     /**
