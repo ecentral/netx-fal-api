@@ -31,7 +31,7 @@ class MiscService
     public function getVersion(): string
     {
         $result = $this->rpc->call('getVersion', []);
-        return is_string($result) ? $result : (string)($result['version'] ?? '');
+        return (string)($result['version'] ?? '');
     }
 
     /**

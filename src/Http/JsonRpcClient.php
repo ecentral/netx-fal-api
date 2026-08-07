@@ -54,9 +54,8 @@ class JsonRpcClient
                 sprintf('NetX API Error (748398342): Error statuscode %s', $response->getStatusCode())
             );
         }
-        if (json_validate($response->getBody())) {
-            $body = json_decode($response->getBody(), true);
-        } else {
+        $body = json_decode((string)$response->getBody(), true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
             throw new \RuntimeException(
                 'NetX API Error (748398472): Invalid json code'
             );
@@ -134,9 +133,8 @@ class JsonRpcClient
             return [];
         }
 
-        if (json_validate($contents)) {
-            $body = json_decode($contents, true);
-        } else {
+        $body = json_decode($contents, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
             throw new \RuntimeException(
                 'NetX API Error (748398473): Invalid json code'
             );
