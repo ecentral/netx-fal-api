@@ -1,4 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the "netx_fal_api" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Fairway\NetXFalApi\Services;
 
 use Fairway\NetXFalApi\Http\JsonRpcClient;
@@ -56,7 +66,7 @@ class CollectionService
     public function getCollections(array $fields = ['collection.base']): array
     {
         $result = $this->rpc->call('getCollections', [['data' => $fields]]);
-        return array_map(fn(array $row) => new Collection($row), $result["results"] ?? $result);
+        return array_map(fn (array $row) => new Collection($row), $result['results'] ?? $result);
     }
 
     /**

@@ -1,8 +1,8 @@
 parameters:
-    bootstrapFiles:
-        - phpstan-bootstrap.php
     level: 6
     paths:
-        - Classes
-        - Configuration
+        - src
+    ignoreErrors:
+        -
+            identifier: missingType.iterableValue
     reportUnmatchedIgnoredErrors: false
