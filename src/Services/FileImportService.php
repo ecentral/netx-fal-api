@@ -13,14 +13,12 @@ namespace Fairway\NetXFalApi\Services;
 
 use Fairway\NetXFalApi\Http\JsonRpcClient;
 use Fairway\NetXFalApi\Models\Asset;
+use InvalidArgumentException;
 
 class FileImportService
 {
-    private JsonRpcClient $rpc;
-
-    public function __construct(JsonRpcClient $rpc)
+    public function __construct(private readonly JsonRpcClient $rpc)
     {
-        $this->rpc = $rpc;
     }
 
     /**
@@ -34,7 +32,7 @@ class FileImportService
     public function importAsset(string $filePath, ?int $folderId = null, array $fields = ['asset.base'], ?string $fileName = null): Asset
     {
         if (!file_exists($filePath)) {
-            throw new \InvalidArgumentException("File not found: $filePath");
+            throw new InvalidArgumentException("File not found: $filePath");
         }
 
         $result = $this->rpc->upload('POST', 'import/asset', $filePath, $fileName, [
@@ -56,7 +54,7 @@ class FileImportService
     public function versionAsset(int $assetId, string $filePath, array $fields = ['asset.base']): Asset
     {
         if (!file_exists($filePath)) {
-            throw new \InvalidArgumentException("File not found: $filePath");
+            throw new InvalidArgumentException("File not found: $filePath");
         }
 
         $result = $this->rpc->upload('PUT', sprintf('import/asset/%d', $assetId), $filePath, null, [

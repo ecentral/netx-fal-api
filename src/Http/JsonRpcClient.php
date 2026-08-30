@@ -13,16 +13,16 @@ namespace Fairway\NetXFalApi\Http;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
+use InvalidArgumentException;
+use RuntimeException;
 
 class JsonRpcClient
 {
-    private GuzzleClient $client;
-    private string $apiToken;
-    private string $baseUri;
+    private readonly GuzzleClient $client;
+    private readonly string $baseUri;
 
-    public function __construct(string $baseUri, string $apiToken, string $apiPath = 'api')
+    public function __construct(string $baseUri, private readonly string $apiToken, string $apiPath = 'api')
     {
-        $this->apiToken = $apiToken;
         $this->baseUri = rtrim($baseUri, '/') . '/api/';
         $this->client = new GuzzleClient([
             'base_uri' => rtrim($baseUri, '/') . '/' . trim($apiPath, '/') . '/',
@@ -50,19 +50,19 @@ class JsonRpcClient
         $response = $this->client->post('rpc', $payload);
 
         if ($response->getStatusCode() !== 200) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf('NetX API Error (748398342): Error statuscode %s', $response->getStatusCode())
             );
         }
         $body = json_decode((string)$response->getBody(), true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 'NetX API Error (748398472): Invalid json code'
             );
         }
 
         if (isset($body['error'])) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf('NetX API Error (%s): %s', $body['error']['code'], $body['error']['message'])
             );
         }
@@ -78,13 +78,13 @@ class JsonRpcClient
     public function upload(string $method, string $path, string $filePath, ?string $fileName = null, array $fields = []): array
     {
         if (!is_file($filePath)) {
-            throw new \InvalidArgumentException("File not found: $filePath");
+            throw new InvalidArgumentException("File not found: $filePath");
         }
 
         $fileHandle = fopen($filePath, 'rb');
 
         if ($fileHandle === false) {
-            throw new \RuntimeException("Unable to open file: $filePath");
+            throw new RuntimeException("Unable to open file: $filePath");
         }
 
         $multipart = [[
@@ -122,7 +122,7 @@ class JsonRpcClient
         }
 
         if ($response->getStatusCode() < 200 || $response->getStatusCode() >= 300) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf('NetX API Error (748398343): Error statuscode %s', $response->getStatusCode())
             );
         }
@@ -135,13 +135,13 @@ class JsonRpcClient
 
         $body = json_decode($contents, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 'NetX API Error (748398473): Invalid json code'
             );
         }
 
         if (isset($body['error'])) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf('NetX API Error (%s): %s', $body['error']['code'], $body['error']['message'])
             );
         }

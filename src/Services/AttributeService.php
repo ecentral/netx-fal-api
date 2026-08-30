@@ -16,11 +16,8 @@ use Fairway\NetXFalApi\Models\Attribute;
 
 class AttributeService
 {
-    private JsonRpcClient $rpc;
-
-    public function __construct(JsonRpcClient $rpc)
+    public function __construct(private readonly JsonRpcClient $rpc)
     {
-        $this->rpc = $rpc;
     }
 
     /**

@@ -1,69 +1,92 @@
 {
-	"name": "fairway/netx-fal-api",
-	"version": "1.0.0",
-	"authors": [
-		{
-			"name": "eCentral GmbH",
-			"role": "Project Owner",
-			"email": "support@ecentral.de",
-			"homepage": "https://www.ecentral.de"
-		}
-	],
-	"type": "typo3-cms-extension",
-	"description": "",
-	"homepage": "https://www.brix.ch",
-	"license": "GPL-2.0-or-later",
-	"keywords": [
-		"typo3",
-		"typo3 backend",
-		"celum"
-	],
-	"autoload": {
-		"psr-4": {
-			"Fairway\\NetXFalApi\\": "src/"
-		}
-	},
-	"config": {
-		"allow-plugins": {
-			"typo3/class-alias-loader": true,
-			"typo3/cms-composer-installers": true
-		},
-		"vendor-dir": ".Build/vendor",
-		"bin-dir": ".Build/bin",
-		"preferred-install": {
-			"typo3/cms-core": "source"
-		},
-		"sort-packages": true
-	},
-	"require": {
-		"php": "^8.2",
-		"ext-curl": "*",
-		"ext-json": "*",
-		"ext-mbstring": "*",
-		"guzzlehttp/guzzle": "^7.3",
-		"guzzlehttp/psr7": "^1.7 || ^2.0"
-	},
-	"require-dev": {
-		"phpstan/phpstan": "^1.8.0",
-		"phpunit/phpunit": "^8.0 || ^9.0",
-		"friendsofphp/php-cs-fixer": "^3.5"
-	},
-	"scripts": {
-		"phpcsfixer": "php-cs-fixer fix --dry-run --diff --using-cache=no --config=.php-cs-fixer.dist.php",
-		"phpstan": "phpstan analyse --configuration=phpstan.neon"
-	},
-	"minimum-stability": "dev",
-	"prefer-stable": true,
-	"autoload-dev": {
-		"psr-4": {
-			"Fairway\\NetXFalApi\\Tests\\": "Tests"
-		}
-	},
-	"extra": {
-		"typo3/cms": {
-			"app-dir": ".Build",
-			"web-dir": ".Build/Web",
-			"extension-key": "netx_fal_api"
-		}
-	}
+  "name": "fairway/netx-fal-api",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "eCentral GmbH",
+      "role": "Project Owner",
+      "email": "support@ecentral.de",
+      "homepage": "https://www.ecentral.de"
+    },
+    {
+      "name": "Denis Doerner",
+      "role": "Developer",
+      "email": "d.doerner@ecentral.de",
+      "homepage": "https://www.ecentral.de"
+    },
+    {
+      "name": "Alex Hamann",
+      "role": "Developer",
+      "email": "a.hamann@ecentral.de",
+      "homepage": "https://www.ecentral.de"
+    },
+    {
+      "name": "Mohamad Omeirat",
+      "role": "Developer",
+      "email": "m.omeirat@ecentral.de",
+      "homepage": "https://www.ecentral.de"
+    }
+  ],
+  "type": "typo3-cms-extension",
+  "description": "Client library for netx APIs.",
+  "homepage": "https://www.brix.ch",
+  "license": "GPL-2.0-or-later",
+  "keywords": [
+    "NetX",
+    "API"
+  ],
+  "autoload": {
+    "psr-4": {
+      "Fairway\\NetXFalApi\\": "src/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "typo3/class-alias-loader": true,
+      "typo3/cms-composer-installers": true
+    },
+    "vendor-dir": ".Build/vendor",
+    "bin-dir": ".Build/bin",
+    "preferred-install": {
+      "typo3/cms-core": "source"
+    },
+    "sort-packages": true
+  },
+  "require": {
+    "php": "^8.2",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "guzzlehttp/guzzle": "^7.3",
+    "guzzlehttp/psr7": "^1.7 || ^2.0"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.2",
+    "saschaegerer/phpstan-typo3": "^3.0",
+    "friendsofphp/php-cs-fixer": "^3.95",
+    "rector/rector": "^2.5",
+    "ssch/typo3-rector": "^3.15",
+    "typo3/coding-standards": "^0.9"
+  },
+  "scripts": {
+    "cs:check": "php-cs-fixer fix --dry-run --diff --using-cache=no --config=.php-cs-fixer.dist.php",
+    "cs:fix": "php-cs-fixer fix --diff --using-cache=no --config=.php-cs-fixer.dist.php",
+    "analyze:php": "phpstan analyse --ansi --no-progress --memory-limit=768M -c phpstan.neon",
+    "rector:check": "rector process --dry-run --no-progress-bar --memory-limit=768M",
+    "rector:fix": "rector process --no-progress-bar --memory-limit=768M"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload-dev": {
+    "psr-4": {
+      "Fairway\\NetXFalApi\\Tests\\": "Tests"
+    }
+  },
+  "extra": {
+    "typo3/cms": {
+      "app-dir": ".Build",
+      "web-dir": ".Build/Web",
+      "extension-key": "netx_fal_api"
+    }
+  }
 }

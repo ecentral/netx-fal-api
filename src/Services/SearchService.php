@@ -17,11 +17,8 @@ use Fairway\NetXFalApi\Models\Collection;
 
 class SearchService
 {
-    private JsonRpcClient $rpc;
-
-    public function __construct(JsonRpcClient $rpc)
+    public function __construct(private readonly JsonRpcClient $rpc)
     {
-        $this->rpc = $rpc;
     }
 
     /**
