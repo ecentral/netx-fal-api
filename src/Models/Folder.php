@@ -15,7 +15,7 @@ use Fairway\NetXFalApi\Models\Folder\Children;
 
 class Folder
 {
-    private int $id;
+    private readonly int $id;
     private ?string $name = null;
     private ?int $parentId = null;
     protected ?Children $children = null;

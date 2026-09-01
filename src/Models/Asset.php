@@ -18,7 +18,7 @@ use Fairway\NetXFalApi\Models\Asset\ProxieType;
 
 class Asset
 {
-    private int $id;
+    private readonly int $id;
     private ?string $name = null;
     private ?string $fileName = null;
     private ?array $containers = null;
@@ -28,7 +28,7 @@ class Asset
     private int $creationDate = 0;
     private int $modificationDate = 0;
 
-    private MetaData $metaData;
+    private readonly MetaData $metaData;
     private int $importDate = 0;
 
     public function __construct(array $data)

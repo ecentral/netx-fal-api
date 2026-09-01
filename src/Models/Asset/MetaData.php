@@ -13,11 +13,8 @@ namespace Fairway\NetXFalApi\Models\Asset;
 
 class MetaData
 {
-    private array $metaData = [];
-
-    public function __construct(array $metaData = [])
+    public function __construct(private array $metaData = [])
     {
-        $this->metaData = $metaData;
     }
 
     public function getMetaData(string $metaDataKey): mixed

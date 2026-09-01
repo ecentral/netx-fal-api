@@ -24,7 +24,7 @@ use Fairway\NetXFalApi\Services\ViewService;
 
 class Client
 {
-    private JsonRpcClient $jsonRpcClient;
+    private readonly JsonRpcClient $jsonRpcClient;
     public ?AssetService $assetService = null;
     public ?FolderService $folderService = null;
     public ?CollectionService $collectionService = null;
@@ -43,17 +43,13 @@ class Client
 
     public function assetService(): AssetService
     {
-        if ($this->assetService === null) {
-            $this->assetService = new AssetService($this->jsonRpcClient);
-        }
+        $this->assetService ??= new AssetService($this->jsonRpcClient);
         return $this->assetService;
     }
 
     public function collectionService(): CollectionService
     {
-        if ($this->collectionService === null) {
-            $this->collectionService = new CollectionService($this->jsonRpcClient);
-        }
+        $this->collectionService ??= new CollectionService($this->jsonRpcClient);
         return $this->collectionService;
     }
 
