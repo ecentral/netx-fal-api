@@ -29,7 +29,7 @@
   ],
   "type": "typo3-cms-extension",
   "description": "Client library for netx APIs.",
-  "homepage": "https://www.brix.ch",
+  "homepage": "https://ecentral.de/fairway-dam-typo3",
   "license": "GPL-2.0-or-later",
   "keywords": [
     "NetX",
