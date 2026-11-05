@@ -74,10 +74,11 @@ class CollectionService
      * @param string[] $data
      * @return Collection
      */
-    public function updateCollection(int $id, array $fields, array $data = ['collection.base']): Collection
+    public function updateCollection(int $id, array $fields, array $assetIds, array $data = ['collection.base']): Collection
     {
         $result = $this->rpc->call('updateCollection', [
             array_merge(['id' => $id], $fields),
+            array_values(array_map(intval(...), $assetIds)),
             ['data' => $data]
         ]);
         return new Collection($result);
@@ -129,5 +130,14 @@ class CollectionService
             ['data' => $fields]
         ]);
         return new Collection($result);
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getAssetIdsByCollection(int $id): array
+    {
+        $result = $this->rpc->call('getAssetsByCollection', [$id, ['data' => ['asset.id']]]);
+        return array_map(fn (array $row) => (int)$row['id'], $result['results'] ?? []);
     }
 }
