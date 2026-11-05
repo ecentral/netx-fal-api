@@ -119,6 +119,7 @@ class CollectionService
 
     /**
      * Remove an asset from a collection.
+     * NetX has no remove method, so the remaining asset list is saved again.
      *
      * @param int $collectionId
      * @param int $assetId
@@ -127,12 +128,13 @@ class CollectionService
      */
     public function removeAssetFromCollection(int $collectionId, int $assetId, array $fields = ['collection.base']): Collection
     {
-        $result = $this->rpc->call('removeAssetFromCollection', [
-            $collectionId,
-            $assetId,
-            ['data' => $fields]
-        ]);
-        return new Collection($result);
+        $collection = $this->getCollectionById($collectionId);
+        $ids = array_values(array_filter(
+            $this->getAssetIdsByCollection($collectionId),
+            fn (int $id) => $id !== $assetId,
+        ));
+
+        return $this->updateCollection($collectionId, ['title' => $collection->name], $ids, $fields);
     }
 
     /**
