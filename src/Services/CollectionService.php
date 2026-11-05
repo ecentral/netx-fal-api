@@ -98,6 +98,7 @@ class CollectionService
 
     /**
      * Add an asset to a collection.
+     * NetX has no add method, so the full asset list is saved again.
      *
      * @param int $collectionId
      * @param int $assetId
@@ -106,12 +107,14 @@ class CollectionService
      */
     public function addAssetToCollection(int $collectionId, int $assetId, array $fields = ['collection.base']): Collection
     {
-        $result = $this->rpc->call('addAssetToCollection', [
-            $collectionId,
-            $assetId,
-            ['data' => $fields]
-        ]);
-        return new Collection($result);
+        $collection = $this->getCollectionById($collectionId);
+        $ids = $this->getAssetIdsByCollection($collectionId);
+
+        if (!in_array($assetId, $ids, true)) {
+            $ids[] = $assetId;
+        }
+
+        return $this->updateCollection($collectionId, ['title' => $collection->name], $ids, $fields);
     }
 
     /**
