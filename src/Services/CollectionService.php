@@ -50,7 +50,7 @@ class CollectionService
      */
     public function getCollectionById(int $id, array $fields = ['collection.base']): Collection
     {
-        $result = $this->rpc->call('getCollectionById', [$id, ['data' => $fields]]);
+        $result = $this->rpc->call('getCollection', [$id, ['data' => $fields]]);
         return new Collection($result);
     }
 
