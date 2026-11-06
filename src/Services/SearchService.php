@@ -35,13 +35,19 @@ class SearchService
         int $size = 10,
         array $fields = ['asset.base']
     ): array {
-        $result = $this->rpc->call('searchAssets', [
-            $query,
+        // NetX only supports an exact match on the asset name or file name.
+        $result = $this->rpc->call('getAssetsByQuery', [
+            [
+                'query' => [
+                    ['operator' => 'or', 'exact' => ['field' => 'name', 'value' => $query]],
+                    ['operator' => 'or', 'exact' => ['field' => 'fileName', 'value' => $query]],
+                ],
+            ],
             [
                 'page' => ['startIndex' => $startIndex, 'size' => $size],
                 'data' => $fields
             ]
         ]);
-        return array_map(fn (array $row) => new Asset($row), $result);
+        return array_map(fn (array $row) => new Asset($row), $result['results'] ?? []);
     }
 }
